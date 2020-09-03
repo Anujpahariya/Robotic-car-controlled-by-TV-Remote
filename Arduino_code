@@ -1,0 +1,152 @@
+#include <IRremote.h>
+int var;
+
+
+int RECV_PIN = 11;
+IRrecv irrecv(RECV_PIN);
+decode_results results;
+void setup() {
+  // put your setup code here, to run once:
+  
+Serial.begin(9600);
+irrecv.enableIRIn();
+    pinMode(2,OUTPUT);
+    pinMode(4,OUTPUT);
+    pinMode(7,OUTPUT);
+    pinMode(8,OUTPUT);
+}
+  
+ void loop()   /*----( LOOP: RUNS CONSTANTLY )----*/
+{
+  if (irrecv.decode(&results)) // have we received an IR signal?
+
+  {
+//    Serial.println(results.value, HEX);  UN Comment to see raw values
+    translateIR(); 
+    irrecv.resume(); // receive the next value
+  }  
+}/* --(end main loop )-- */
+
+/*-----( Declare User-written Functions )-----*/
+void translateIR() // takes action based on IR code received
+
+// describing Car MP3 IR codes 
+
+{
+
+  switch(results.value)
+
+  {
+
+  case 0x10ACFF6F:  
+    Serial.println("forward "); 
+     //forward
+    Serial.println("ford");
+    digitalWrite(2,true);
+      digitalWrite(4,false);
+      digitalWrite(7,true);
+      digitalWrite(8,false);
+    
+    break;
+
+  case 0x46028B71:  
+    Serial.println(" right  "); 
+    //right
+     digitalWrite(2,false);
+        
+       digitalWrite(4,true);
+        digitalWrite(7,true);
+        digitalWrite(8,false);
+      
+    break;
+
+     case 0xE22C:  
+      Serial.println(" right  "); 
+      //right
+      digitalWrite(2,false);
+      digitalWrite(4,true);
+      digitalWrite(7,true);
+       digitalWrite(8,false);
+      
+    break;
+
+  case 0x44C50C7:  
+    Serial.println(" left "); 
+    //left
+    digitalWrite(2,true);
+        digitalWrite(4,false);
+        digitalWrite(7,false);
+        digitalWrite(8,true);
+        
+    break;
+
+     case 0xE2F0:  
+    Serial.println(" left  "); 
+    //left
+    digitalWrite(2,true);
+        digitalWrite(4,false);
+        digitalWrite(7,false);
+        digitalWrite(8,true);
+        
+    break;
+
+  case 0xC2E4CB77:  
+    Serial.println(" ok/   stop  "); 
+    //stop
+        digitalWrite(2,false);  
+    digitalWrite(4,false);
+    digitalWrite(7,false);
+    digitalWrite(8,false);
+    break;
+
+    case 0xE270:  
+    Serial.println(" ok/stop   "); 
+    //stop
+        digitalWrite(2,false);  
+    digitalWrite(4,false);
+    digitalWrite(7,false);
+    digitalWrite(8,false);
+    break;
+
+  case 0x5B0185B1:  
+    Serial.println(" backward         "); 
+    //backward
+    digitalWrite(2,false);  
+    digitalWrite(4,true);
+    digitalWrite(7,false);
+    digitalWrite(8,true);
+   
+    break;
+
+     case 0xE2B0:  
+    Serial.println(" backward         "); 
+    //backward
+    digitalWrite(2,false);  
+    digitalWrite(4,true);
+    digitalWrite(7,false);
+    digitalWrite(8,true);
+   
+    break;
+
+  case 0xE230:  
+    Serial.println(" forward   "); 
+     //forward
+    Serial.println("ford");
+    digitalWrite(2,true);
+      digitalWrite(4,false);
+      digitalWrite(7,true);
+      digitalWrite(8,false);
+   break;
+   
+  case 0xFFC23D:  
+    Serial.println(" PLAY/PAUSE     "); 
+    break;
+     default: 
+    Serial.println(" other button   ");
+
+  }
+
+  delay(500);
+
+
+} //END translateIR
